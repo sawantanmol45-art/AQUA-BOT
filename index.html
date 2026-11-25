@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AquaBot — Turning Waste into Oxygen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+*{box-sizing:border-box;margin:0}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#06223f;--bg2:#0a3563;--fg:#eaf6ff;--mut:#9cc3e6;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.16);--a:#37c8ff;--g:#00ffa3}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eef7ff;--bg2:#dcecfb;--fg:#0a2a4a;--mut:#4a6f90;--card:rgba(255,255,255,.9);--bd:rgba(10,42,74,.14);--a:#0a7fc4;--g:#00875a}}
+:root[data-theme="light"]{--bg:#eef7ff;--bg2:#dcecfb;--fg:#0a2a4a;--mut:#4a6f90;--card:rgba(255,255,255,.9);--bd:rgba(10,42,74,.14);--a:#0a7fc4;--g:#00875a}
+html{scroll-behavior:smooth;scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--fg);line-height:1.6;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:#1b7fcb;z-index:60}
+a{color:inherit}
+.dk{--fg:#eaf6ff;--mut:#a9cdee;--card:rgba(255,255,255,.07);--bd:rgba(255,255,255,.16);--a:#37c8ff;--g:#00ffa3;color:var(--fg)}
+.wrap{width:min(1120px,92%);margin:auto}
+section{padding:clamp(64px,9vw,120px) 0}
+.eyebrow{color:var(--a);font-weight:600;letter-spacing:.2em;font-size:.76rem}
+h2{font-size:clamp(1.8rem,4.6vw,3rem);font-weight:800;line-height:1.15;margin:6px 0 12px}
+.lead{color:var(--mut);max-width:700px}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .8s,transform .8s}.rv.in{opacity:1;transform:none}
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:calc(env(safe-area-inset-top,0px) + 16px) clamp(16px,5vw,64px) 14px;display:flex;align-items:center;justify-content:space-between;transition:.3s;color:#fff}
+.nav.solid{background:rgba(8,48,96,.84);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.logo{font-weight:800;font-size:1.35rem;letter-spacing:.02em;color:#fff;text-decoration:none}
+#menu{display:flex;gap:clamp(14px,2.2vw,34px)}
+#menu a{color:#fff;text-decoration:none;font-size:.8rem;font-weight:500;letter-spacing:.05em;text-transform:uppercase;opacity:.85;padding:6px 0;border-bottom:2px solid transparent;transition:.2s}
+#menu a:hover,#menu a.on{opacity:1;border-color:#7fe0ff}
+#burger{display:none;background:none;border:0;cursor:pointer;width:46px;height:36px;flex-direction:column;justify-content:center;gap:7px;padding:0}
+#burger i{display:block;height:4px;background:#fff;border-radius:2px}
+@media (max-width:1020px){#burger{display:flex}#menu{position:fixed;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top,0px) + 78px) 24px 24px;flex-direction:column;gap:14px;background:rgba(8,48,96,.97);transform:translateY(-110%);transition:.4s;z-index:-1}.open #menu{transform:none}}
+/* hero */
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;padding:110px 20px 32vh;background:linear-gradient(180deg,#2b8fd6 0%,#1279c4 38%,#0e68b2 70%,#1a5ea8 100%);overflow:hidden;--fg:#fff}
+.hero::before{content:"";position:absolute;right:-6%;top:-25%;width:58%;height:75%;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,0));clip-path:polygon(28% 0,100% 0,100% 100%,0 100%)}
+#wave{position:absolute;left:0;right:0;bottom:0;width:100%;height:58%}
+.hero .hc{position:relative;z-index:2}
+.pill{display:inline-block;padding:6px 18px;border-radius:99px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);font-size:.74rem;letter-spacing:.18em;margin-bottom:18px}
+h1{font-size:clamp(3.4rem,12vw,7.4rem);font-weight:800;line-height:1;letter-spacing:-.025em}
+.hero h3{font-size:clamp(1.2rem,3.4vw,2.1rem);font-weight:600;margin-top:10px}
+.hero p{max-width:560px;margin:14px auto 0;opacity:.9}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+.btn{display:inline-flex;gap:8px;align-items:center;padding:13px 26px;border-radius:99px;font:600 .95rem Poppins,system-ui,sans-serif;text-decoration:none;border:0;cursor:pointer;transition:.25s}
+.btn:hover{transform:translateY(-3px)}.btn.p{background:#fff;color:#0a5aa8;box-shadow:0 10px 30px rgba(0,0,0,.25)}.btn.o{border:2px solid rgba(255,255,255,.85);color:#fff;background:transparent}
+.hst{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:28px}.hst b{padding:8px 16px;border-radius:14px;background:rgba(255,255,255,.14);font-size:.8rem;font-weight:500;backdrop-filter:blur(8px)}
+/* cards */
+#how{background:var(--bg)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin-top:34px}
+.cd{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:22px;transition:.3s;position:relative;overflow:hidden}
+.cd:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(14,104,178,.35)}
+.cd i{font-size:2.2rem;font-style:normal}.cd b{display:block;margin:8px 0 4px}.cd p{font-size:.88rem;color:var(--mut)}.cd em{position:absolute;right:16px;top:6px;font:800 2.8rem Poppins,sans-serif;opacity:.12;font-style:normal}
+/* demo */
+#demo{background:linear-gradient(180deg,#0d5aa3,#073560)}
+.player{position:relative;border-radius:22px;overflow:hidden;background:#030a1d;border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 80px rgba(0,0,0,.45);aspect-ratio:1000/540;margin-top:30px}
+.player canvas{display:block;width:100%;height:100%}
+#vhud{position:absolute;left:12px;top:12px;padding:6px 12px;border-radius:12px;background:rgba(3,10,29,.72);font:12px ui-monospace,Menlo,Consolas,monospace;color:#cfeaff;pointer-events:none}
+.cap{padding:12px 16px;border-radius:14px;background:rgba(3,16,34,.82);border:1px solid rgba(55,200,255,.5);backdrop-filter:blur(8px);color:#fff}
+.cap small{color:#37c8ff;letter-spacing:.14em;font-size:.68rem}.cap b{display:block;font-size:1.1rem}.cap span{font-size:.86rem;display:block}.cap code{display:block;margin-top:6px;font:.74rem ui-monospace,Menlo,Consolas,monospace;color:#7dffb0;white-space:pre-wrap}
+.player .cap{position:absolute;left:16px;bottom:64px;max-width:min(620px,70%);pointer-events:none}
+.cap.out{display:none;margin-top:14px}
+#vbig{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;border:0;background:linear-gradient(135deg,#00ffa3,#37c8ff);color:#02161f;font-size:2.2rem;cursor:pointer;animation:pls 1.8s infinite;padding-left:6px}
+@keyframes pls{0%{box-shadow:0 0 0 0 rgba(55,200,255,.7)}70%{box-shadow:0 0 0 28px rgba(55,200,255,0)}100%{box-shadow:0 0 0 0 rgba(55,200,255,0)}}
+.ctrl{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(0deg,rgba(3,10,29,.92),transparent);color:#fff;font-size:.8rem}
+.ctrl button,.ctrl select{background:rgba(255,255,255,.16);border:0;color:#fff;border-radius:10px;padding:6px 12px;font:inherit;cursor:pointer}.ctrl select option{color:#000}
+.ctrl input[type=range]{flex:1;accent-color:#37c8ff;min-width:0}
+.chs{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.chs button{padding:8px 14px;border-radius:99px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#fff;font:500 .8rem Poppins,sans-serif;cursor:pointer;transition:.2s}
+.chs button.on{background:linear-gradient(135deg,#00ffa3,#37c8ff);color:#02161f;border-color:transparent;font-weight:600}
+.xl{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:22px;padding:16px 20px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2)}
+.xl p{flex:1;min-width:220px;font-size:.9rem;color:#cfe6fa}
+@media (max-width:700px){.player .cap{display:none}.cap.out{display:block}.ctrl #vtime{display:none}}
+/* blueprint */
+#blueprint{background-color:#0a3a6b;background-image:linear-gradient(rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:80px 80px,80px 80px,16px 16px,16px 16px}
+.bpgrid{display:grid;grid-template-columns:1.25fr 1fr;gap:16px;margin-top:30px}
+.sheet{border:2px solid rgba(207,232,255,.7);border-radius:8px;padding:12px;background:rgba(5,40,82,.55);position:relative}
+.sheet.w{grid-column:1/-1}
+.stamp{font:600 .7rem ui-monospace,Menlo,Consolas,monospace;letter-spacing:.14em;color:#9fd0f5;margin-bottom:6px}
+.bpsvg{width:100%;height:auto;display:block}
+.bpsvg .ln{fill:none;stroke:#cfe8ff;stroke-width:1.5;stroke-linejoin:round}
+.bpsvg text{fill:#cfe9ff;stroke:none;font:10px ui-monospace,Menlo,Consolas,monospace}
+.bpsvg [data-bp]{transition:.2s;cursor:pointer}
+.bpsvg.dm [data-bp]:not(.on){opacity:.28}
+.bpsvg .on path,.bpsvg .on rect,.bpsvg .on circle{stroke:#00e5ff;stroke-width:2.4}
+.bpsvg .on{filter:drop-shadow(0 0 5px #00e5ff)}
+.bpsvg .inner{stroke:#0a3a6b!important;stroke-width:24!important}
+.bpsvg .co circle{fill:#0a3a6b;stroke:#ffd166;stroke-width:1.6}.bpsvg .co path{stroke:#ffd166;stroke-width:1}.bpsvg .co text{fill:#ffd166;font-weight:700;font-size:11px;text-anchor:middle}
+.bpsvg .dim path{stroke:#bfe3ff;stroke-width:1}
+.bpl{display:flex;flex-direction:column;gap:12px}
+#bpl{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;list-style:none;padding:0}
+#bpl li{display:flex;gap:8px;align-items:center;padding:7px 10px;border-radius:10px;border:1px solid rgba(207,232,255,.35);font-size:.8rem;cursor:pointer;transition:.2s;color:#fff}
+#bpl li b{width:22px;height:22px;border-radius:50%;border:1.6px solid #ffd166;color:#ffd166;display:grid;place-items:center;font-size:.7rem;flex:none}
+#bpl li.on{background:rgba(0,229,255,.2);border-color:#00e5ff}
+.bpi{padding:12px 14px;border-radius:10px;border:1px dashed rgba(207,232,255,.5);font-size:.88rem;min-height:64px;color:#e6f3ff}
+@media (max-width:860px){.bpgrid{grid-template-columns:1fr}}
+/* connections */
+#connections{background:var(--bg2)}
+.dkcard{background:#06223f;border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:14px;margin-top:30px;color:#eaf6ff}
+.wsvg{width:100%;height:auto;display:block}
+.wsvg text{fill:#eaf6ff;font-family:Poppins,system-ui,sans-serif}
+.wire{fill:none;stroke-width:2.6;stroke-dasharray:7 7;animation:fl 1s linear infinite}
+@keyframes fl{to{stroke-dashoffset:-14}}
+.wg{cursor:pointer;transition:.25s}.wsvg.dm .wg:not(.on){opacity:.14}.wg.on{filter:drop-shadow(0 0 6px rgba(55,200,255,.8))}
+.wg rect.bx{fill:rgba(255,255,255,.08);stroke:rgba(255,255,255,.3)}.wg.on rect.bx{stroke:#37c8ff;fill:rgba(55,200,255,.16)}
+#wi{margin-top:12px;padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);min-height:92px}
+#wi b{color:#37c8ff;font-size:1.05rem}#wi ul{margin:6px 0 0 18px;font:.82rem ui-monospace,Menlo,Consolas,monospace;color:#7dffb0}
+.tw{overflow-x:auto;margin-top:26px}table{width:100%;border-collapse:collapse;font-size:.88rem;min-width:560px}
+th,td{padding:11px 12px;text-align:left;border-bottom:1px solid var(--bd);vertical-align:top}th{color:var(--a);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}td code{font:.78rem ui-monospace,Menlo,Consolas,monospace;color:var(--a)}
+details.cdx{margin-top:22px;background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:6px 18px}
+details summary{cursor:pointer;font-weight:600;padding:12px 0}
+pre{background:#050c17;color:#cfe8ff;border-radius:14px;padding:16px;overflow-x:auto;font:12.5px/1.55 ui-monospace,Menlo,Consolas,monospace;max-height:480px;margin:6px 0 14px}
+pre .c{color:#5f7f98;font-style:italic}pre .k{color:#ff79c6;font-style:normal}pre .n{color:#ffcf4a;font-style:normal}pre .f{color:#37c8ff;font-style:normal}
+.btn.s{background:linear-gradient(135deg,#00ffa3,#37c8ff);color:#02161f;padding:9px 18px;font-size:.85rem}
+/* impact */
+#impact{background:var(--bg)}
+.ig{display:grid;grid-template-columns:1fr 1.3fr;gap:30px;align-items:center;margin-top:30px}
+.earth{width:min(320px,80%);margin:auto;display:block;filter:drop-shadow(0 0 40px rgba(55,200,255,.5))}
+.land{animation:spin 26s linear infinite}@keyframes spin{to{transform:translateX(-240px)}}
+.ring{transform-origin:120px 120px;animation:rg 3s ease-out infinite}@keyframes rg{from{transform:scale(1);opacity:.6}to{transform:scale(1.35);opacity:0}}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.fc{padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--bd)}.fc b{display:block;font-size:1.5rem;color:var(--a);line-height:1.2}.fc span{font-size:.82rem;color:var(--mut)}
+.calc{margin-top:30px;padding:24px;border-radius:24px;background:var(--card);border:1px solid var(--bd)}
+.calc h3{margin-bottom:12px}
+.sl{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+.sl label{font-size:.85rem;color:var(--mut);display:flex;flex-direction:column;gap:4px}.sl b{color:var(--fg)}
+input[type=range]{accent-color:var(--a);width:100%}
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:20px}
+.res div{padding:14px;border-radius:16px;background:linear-gradient(135deg,rgba(55,200,255,.18),rgba(0,255,163,.12));border:1px solid var(--bd)}
+.res b{display:block;font-size:1.6rem;font-weight:800;font-variant-numeric:tabular-nums}.res span{font-size:.78rem;color:var(--mut)}
+.sdg{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.sdg span{padding:8px 16px;border-radius:99px;font-size:.8rem;font-weight:600;color:#fff}
+.ba{position:relative;height:260px;border-radius:22px;overflow:hidden;margin-top:30px;border:1px solid var(--bd);--p:50%;user-select:none}
+.ba .ly{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:space-around;padding:0 4% 24px;font-size:2.4rem}
+.ba .bf{background:linear-gradient(#7a7340,#3b3719)}.ba .af{background:linear-gradient(#4cc6ff,#0a5aa8);clip-path:inset(0 0 0 var(--p))}
+.ba .ly span{animation:bob 3s ease-in-out infinite}.ba .ly span:nth-child(2n){animation-delay:-1.4s}@keyframes bob{50%{transform:translateY(-14px) rotate(8deg)}}
+.ba .tg{position:absolute;top:12px;padding:4px 12px;border-radius:99px;background:rgba(0,0,0,.45);color:#fff;font-size:.74rem;font-weight:600}
+.ba .hd{position:absolute;top:0;bottom:0;left:var(--p);width:3px;background:#fff;pointer-events:none}
+.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize}
+.honest{margin-top:24px;padding:14px 18px;border-left:4px solid #ffcf4a;border-radius:10px;background:var(--card);font-size:.9rem}
+@media (max-width:820px){.ig{grid-template-columns:1fr}}
+/* faq + footer */
+#faq{background:var(--bg2)}
+.faq{margin-top:26px;display:grid;gap:10px}
+.faq details{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:4px 18px}
+.faq summary{cursor:pointer;font-weight:600;padding:14px 0}.faq p{padding:0 0 14px;color:var(--mut);font-size:.92rem}
+footer{background:linear-gradient(180deg,#0e68b2,#0a3f77);color:#fff;padding:50px 0 34px;text-align:center}
+footer .logo{font-size:1.6rem}footer nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:16px 0}footer nav a{text-decoration:none;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;opacity:.85}
+footer small{display:block;opacity:.75;margin-top:10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+/* esp32-cam */
+#cam{background:linear-gradient(180deg,#073560,#06223f)}
+.cgrid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;margin-top:30px;align-items:start}
+.cplayer{position:relative;border-radius:22px;overflow:hidden;background:#000;border:1px solid rgba(255,255,255,.2);box-shadow:0 30px 80px rgba(0,0,0,.45);aspect-ratio:4/3}
+.cplayer canvas{display:block;width:100%;height:100%}
+.cctrl{position:absolute;left:0;right:0;bottom:0;display:flex;gap:10px;align-items:center;padding:10px 14px;background:linear-gradient(0deg,rgba(3,10,29,.92),transparent);color:#fff;font-size:.78rem}
+.cctrl button{background:rgba(255,255,255,.16);border:0;color:#fff;border-radius:10px;padding:6px 12px;font:inherit;cursor:pointer}
+.cctrl span{margin-left:auto;font-family:ui-monospace,Menlo,Consolas,monospace;opacity:.85}
+.zst{list-style:none;padding:0;display:grid;gap:8px}
+.zst li{display:flex;gap:12px;align-items:center;padding:10px 14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);transition:.25s;font-weight:600;font-size:.92rem}
+.zst li b{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.6px solid var(--a);color:var(--a);flex:none;font-size:.8rem}
+.zst li small{display:block;color:var(--mut);font-size:.76rem;font-weight:400}
+.zst li.on{border-color:var(--g);background:rgba(0,255,163,.13);transform:translateX(6px)}
+.zst li.on b{background:var(--g);color:#02161f;border-color:var(--g)}
+.zsc{margin:14px 0;padding:12px 14px;border-radius:14px;border:1px solid var(--bd);background:var(--card);font-size:.8rem;color:var(--mut)}
+.zsc div{display:flex;justify-content:space-between}.zsc em{font-style:normal;color:var(--fg);font-weight:600;font-variant-numeric:tabular-nums}
+.zb{position:relative;height:10px;border-radius:6px;background:rgba(255,255,255,.12);margin:4px 0 10px}
+.zb u{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,#37c8ff,#00ffa3);width:0}
+.zb.t::after{content:"";position:absolute;left:80%;top:-3px;bottom:-3px;width:2px;background:#ffd166}
+.zsc small{display:block;color:#ffd166;font-size:.7rem}
+.term{background:#050c17;border:1px solid var(--bd);border-radius:14px;padding:12px 14px;font:12px/1.6 ui-monospace,Menlo,Consolas,monospace;color:#9cc3e6;height:190px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;white-space:pre}
+.term .g{color:#7dffb0}.term .a{color:#ffcf4a}
+.zs4{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:18px}
+@media (max-width:860px){.cgrid{grid-template-columns:1fr}.cctrl span{display:none}}
+</style></head><body>
+<header class="nav" id="nav"><a class="logo" href="#home">🌊 AQUABOT</a>
+<nav id="menu"><a href="#home">Home</a><a href="#how">How it works</a><a href="#demo">Demo</a><a href="#cam">ESP32-CAM</a><a href="#blueprint">Blueprint</a><a href="#connections">Connections</a><a href="#impact">Impact</a><a href="#faq">FAQ</a></nav>
+<button id="burger" aria-label="Menu"><i></i><i></i><i></i></button></header>
+<main>
+<section class="hero" id="home"><canvas id="wave"></canvas>
+<div class="hc"><span class="pill">AUTONOMOUS · ARDUINO UNO · WASTE → O₂</span><h1>Welcome</h1><h3>To AquaBot</h3>
+<p>A self-driving boat that scoops waste from the water, sends it through a tunnel to a mini factory, and feeds an oxygen unit.</p>
+<div class="btns"><a class="btn p" href="#demo">▶ Watch the demo</a><a class="btn o" href="https://claude.ai/artifact/4G46RThZ3zysywqLp6ivXF" target="_blank" rel="noopener">🧊 Open 3D model</a></div>
+<div class="hst"><b>1 Arduino Uno brain</b><b>5-stage pipeline</b><b>12 documented wires</b></div></div></section>
+
+<section id="how"><div class="wrap"><div class="eyebrow rv">HOW IT WORKS</div><h2 class="rv">From polluted water to fresh oxygen</h2><p class="lead rv">Five stages, one Arduino Uno controlling them all.</p><div class="cards" id="cards"></div></div></section>
+
+<section id="demo" class="dk"><div class="wrap"><div class="eyebrow rv">VIDEO DEMO</div><h2 class="rv">Watch AquaBot work</h2><p class="lead rv">A 68-second animated walkthrough: every sensor, motor, relay and machine — with the matching Arduino code.</p>
+<div class="player" id="player"><canvas id="vid" width="1500" height="810"></canvas><div id="vhud"></div>
+<div class="cap" id="cap1"></div><button id="vbig" aria-label="Play">▶</button>
+<div class="ctrl"><button id="vpp">▶</button><input type="range" id="vseek" min="0" max="680" value="0"><span id="vtime">0:00 / 1:08</span><select id="vsp"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option></select><button id="vfs" title="Fullscreen">⛶</button></div></div>
+<div class="cap out" id="cap2"></div><div class="chs" id="chs"></div>
+<div class="xl"><p>Want to inspect every part yourself? Open the interactive 3D explorer: rotate, zoom, and tap any component.</p><a class="btn s" href="https://claude.ai/artifact/4G46RThZ3zysywqLp6ivXF" target="_blank" rel="noopener">🧊 Open 3D explorer</a></div></div></section>
+
+<section id="cam" class="dk"><div class="wrap"><div class="eyebrow rv">SECOND PREVIEW · ESP32-CAM</div><h2 class="rv">What the camera sees</h2><p class="lead rv">The ESP32-CAM is AquaBot's eyes. It captures a picture of what floats ahead, a trained model classifies it, the logic decides whether to collect, and a one-letter command goes to the Arduino Uno over a single wire.</p>
+<div class="cgrid">
+<div class="cplayer"><canvas id="zcv" width="640" height="480"></canvas><div class="cctrl"><button id="zpp" aria-label="Play or pause">⏸</button><button id="znx">⏭ Next object</button><span id="zt"></span></div></div>
+<div>
+<ol class="zst" id="zst"><li><b>1</b><div>Capture<small>OV2640 takes a frame of the water ahead</small></div></li><li><b>2</b><div>Recognise<small>Trained model: plastic waste or other</small></div></li><li><b>3</b><div>Decide<small>Collect only if plastic score ≥ 80%</small></div></li><li><b>4</b><div>Send command<small>ESP32-CAM → Arduino Uno: "C" = collect</small></div></li></ol>
+<div class="zsc"><div>PLASTIC WASTE <em id="zp1">--</em></div><div class="zb t"><u id="zb1"></u></div><div>OTHER <em id="zp2">--</em></div><div class="zb"><u id="zb2"></u></div><small>Yellow line = 80% decision threshold</small></div>
+<div class="term" id="zterm"></div></div></div>
+<div class="zs4 facts"><div class="fc"><b id="zf1">0</b><span>frames analysed</span></div><div class="fc"><b id="zf2">0</b><span>collect commands sent</span></div><div class="fc"><b id="zf3">0</b><span>objects ignored</span></div></div>
+<div class="tw"><table><thead><tr><th>ESP32-CAM pin</th><th>Goes to</th><th>Job</th></tr></thead><tbody>
+<tr><td><b>GPIO14 (TX)</b></td><td><code>Uno A4</code> (SoftwareSerial RX)</td><td>Sends the "C" command. One-way, 3.3 V → 5 V is fine.</td></tr>
+<tr><td><b>GND</b></td><td><code>Uno GND</code></td><td>Common ground, required.</td></tr>
+<tr><td><b>5V</b></td><td><code>Separate 5 V supply</code></td><td>The camera needs a stable 5 V and about 500 mA. Don't power it from the Uno 3.3 V pin.</td></tr>
+<tr><td><b>GPIO0</b></td><td><code>GND</code> (only while flashing)</td><td>Upload mode. Remove it, then reset.</td></tr></tbody></table></div>
+<details class="cdx"><summary>📷 ESP32-CAM sketch (capture → recognise → decide → send)</summary><button class="btn s zcp" data-i="0">📋 Copy code</button><pre><code id="zc0"></code></pre></details>
+<details class="cdx"><summary>🔌 Arduino Uno changes (listen for the camera)</summary><button class="btn s zcp" data-i="1">📋 Copy code</button><pre><code id="zc1"></code></pre></details>
+<p class="honest">The preview is a simulation. The real accuracy depends on the model you train (for example with Edge Impulse or TensorFlow Lite) on photos of your own waste items in your own water. The sketch leaves <code>plasticScore()</code> as the one place to plug it in.</p>
+</div></section>
+
+<section id="blueprint"><div class="wrap" style="color:#fff"><div class="eyebrow rv" style="color:#ffd166">BLUEPRINT</div><h2 class="rv">Engineering blueprint</h2><p class="lead rv" style="color:#bfe0fa">Hover or tap a number or a part to highlight it on both sheets. Dimensions marked * are suggestions.</p>
+<div class="bpgrid">
+<div class="sheet w"><div class="stamp">SHEET 1 · SIDE ELEVATION · AQUABOT SYSTEM</div>
+<svg id="bp1" class="bpsvg" viewBox="0 0 1000 400"><defs><marker id="ah" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#bfe3ff" stroke="none"/></marker><pattern id="ht" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M0 8L8 0" stroke="#7fb8e8" stroke-width=".6"/></pattern></defs>
+<g class="ln"><path d="M10 232H560" stroke-dasharray="10 6"/><path d="M560 232H990"/><rect x="560" y="232" width="430" height="150" fill="url(#ht)" stroke="none" opacity=".4"/>
+<g data-bp="1"><rect x="70" y="210" width="200" height="30" rx="15"/><rect x="84" y="198" width="172" height="8"/></g>
+<g data-bp="2"><rect x="92" y="178" width="34" height="18"/><rect x="98" y="183" width="12" height="8"/></g>
+<g data-bp="3"><rect x="226" y="176" width="12" height="22"/><circle cx="238" cy="183" r="3.5"/><circle cx="238" cy="191" r="3.5"/></g>
+<g data-bp="4"><path d="M170 170V198H222V170"/><rect x="178" y="184" width="10" height="14"/><rect x="192" y="188" width="12" height="10"/></g>
+<g data-bp="5"><rect x="244" y="190" width="14" height="10"/><path d="M258 196L302 232L296 240L252 204Z"/><path d="M268 205l-4 6M278 214l-4 6M288 223l-4 6"/></g>
+<g data-bp="6"><rect x="50" y="214" width="22" height="12"/><circle cx="44" cy="220" r="8"/><path d="M44 212V228M36 220H52"/></g>
+<g data-bp="7"><rect x="86" y="140" width="120" height="8"/><path d="M96 148V198M196 148V198M116 140v8M146 140v8M176 140v8"/></g>
+<g data-bp="8"><path d="M560 190H620L608 230H572Z"/><rect x="552" y="196" width="6" height="30"/><path d="M640 232V196"/><circle cx="640" cy="192" r="4"/></g>
+<g data-bp="9"><path d="M590 238V340H770V238" stroke-width="28"/><path class="inner" d="M590 238V340H770V238"/><path d="M590 238V340H770V238" stroke-dasharray="6 6" stroke-width="1.2"/></g>
+<g data-bp="10"><rect x="720" y="110" width="110" height="122"/><rect x="730" y="68" width="18" height="42"/><rect x="740" y="140" width="64" height="44"/><circle cx="772" cy="208" r="13"/><circle cx="800" cy="214" r="8"/></g>
+<g data-bp="11"><rect x="850" y="130" width="40" height="102" rx="18"/><path d="M856 160H884"/><circle cx="866" cy="195" r="3"/><circle cx="876" cy="180" r="2.5"/><circle cx="870" cy="210" r="2"/><rect x="860" y="120" width="20" height="10"/></g>
+<g data-bp="12"><rect x="900" y="182" width="80" height="50" rx="25"/><circle cx="948" cy="174" r="7"/><path d="M910 232V240M970 232V240"/></g>
+<g data-bp="13"><rect x="650" y="218" width="26" height="14"/><rect x="684" y="218" width="26" height="14"/></g>
+<path d="M830 200H850M890 215H900"/>
+<g class="dim"><path d="M70 330H270" marker-start="url(#ah)" marker-end="url(#ah)"/><path d="M70 300V338M270 300V338"/><text x="170" y="324" text-anchor="middle">L ≈ 1.0 m*</text><path d="M975 232V340" marker-start="url(#ah)" marker-end="url(#ah)"/><text x="968" y="290" text-anchor="end">≈ 0.5 m*</text></g>
+<text x="470" y="222" text-anchor="end">WATER LINE</text><text x="990" y="252" text-anchor="end">GROUND LEVEL</text></g><g id="co1"></g></svg></div>
+<div class="sheet"><div class="stamp">SHEET 2 · TOP VIEW · BOT LAYOUT</div>
+<svg id="bp2" class="bpsvg" viewBox="0 0 460 260"><g class="ln">
+<g data-bp="1"><rect x="30" y="30" width="360" height="46" rx="23"/><rect x="30" y="184" width="360" height="46" rx="23"/><rect x="60" y="70" width="300" height="120"/></g>
+<g data-bp="2"><rect x="80" y="84" width="60" height="38"/><rect x="92" y="94" width="22" height="14"/></g>
+<g data-bp="14"><rect x="80" y="140" width="50" height="38"/><rect x="146" y="148" width="70" height="30"/></g>
+<g data-bp="4"><rect x="240" y="84" width="72" height="64"/><path d="M240 84L312 148M312 84L240 148"/></g>
+<g data-bp="7"><rect x="70" y="74" width="150" height="112" stroke-dasharray="6 4"/><path d="M120 74V186M170 74V186M70 112H220M70 150H220"/></g>
+<g data-bp="3"><rect x="334" y="96" width="14" height="18"/><rect x="334" y="146" width="10" height="12"/></g>
+<g data-bp="5"><path d="M360 92L432 80V180L360 168Z"/><path d="M380 88V172M400 84V176M420 82V178"/></g>
+<g data-bp="6"><rect x="12" y="46" width="20" height="14"/><rect x="12" y="198" width="20" height="14"/><circle cx="6" cy="53" r="6"/><circle cx="6" cy="205" r="6"/></g></g><g id="co2"></g></svg></div>
+<div class="bpl"><ol id="bpl"></ol><div class="bpi" id="bpi">Hover a part to read what it does.</div></div></div></div></section>
+
+<section id="connections"><div class="wrap"><div class="eyebrow rv">CONNECTIONS</div><h2 class="rv">How everything is wired</h2><p class="lead rv">Every component talks to the Arduino Uno. Hover or tap a part to follow its wire and see the exact pins.</p>
+<div class="dkcard"><svg id="ws" class="wsvg" viewBox="0 0 1000 540"></svg><div id="wi">Hover or tap a component to see its pins.</div></div>
+<div class="tw"><table><thead><tr><th>Part</th><th>Pins / wiring</th><th>Job</th></tr></thead><tbody id="wt"></tbody></table></div>
+<details class="cdx"><summary>💻 Arduino sketch (SEARCH → COLLECT → DELIVER → PROCESS)</summary><button class="btn s" id="cp">📋 Copy code</button><pre><code id="cd"></code></pre></details></div></section>
+
+<section id="impact"><div class="wrap"><div class="eyebrow rv">IMPACT ON EARTH</div><h2 class="rv">Clean water in, fresh oxygen out</h2><p class="lead rv">Waste in our waterways harms wildlife and people. AquaBot shows how a low-cost robot can turn that problem into a resource loop.</p>
+<div class="ig"><svg class="earth" viewBox="0 0 240 240"><defs><clipPath id="gc"><circle cx="120" cy="120" r="100"/></clipPath><radialGradient id="gg" cx="35%" cy="30%"><stop offset="0" stop-color="#6fd6ff"/><stop offset=".6" stop-color="#1279c4"/><stop offset="1" stop-color="#06335f"/></radialGradient></defs>
+<circle class="ring" cx="120" cy="120" r="100" fill="none" stroke="#37c8ff" stroke-width="2"/><circle cx="120" cy="120" r="100" fill="url(#gg)"/>
+<g clip-path="url(#gc)"><g class="land" fill="#2fd28a" opacity=".9"><path id="l1" d="M30 90q20-30 55-15q25 15 10 40q-20 25-45 15q-30-10-20-40zM120 60q25-20 50 0q15 20-5 40q-25 15-40-5q-15-15-5-35zM150 140q20-15 40 5q10 20-10 30q-25 5-35-10q-5-15 5-25z"/><use href="#l1" x="240"/></g></g>
+<circle cx="120" cy="120" r="100" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/></svg>
+<div class="facts"><div class="fc"><b>8–11 Mt</b><span>of plastic are estimated to enter the ocean every year (estimates vary by study)</span></div><div class="fc"><b>~550 L</b><span>of oxygen is breathed by an adult per day</span></div><div class="fc"><b>24/7</b><span>an autonomous bot can keep working without a crew</span></div><div class="fc"><b>Circular</b><span>waste becomes energy or nutrients for the O₂ unit</span></div></div></div>
+<div class="ba rv" id="ba"><div class="ly bf"><span>🥤</span><span>🛍️</span><span>🧴</span><span>🥫</span><span>🍾</span></div><div class="ly af"><span>🐟</span><span>🐢</span><span>🐬</span><span>🐠</span><span>🦀</span></div><span class="tg" style="left:12px">BEFORE</span><span class="tg" style="right:12px">WITH AQUABOT</span><div class="hd"></div><input type="range" id="bar" min="0" max="100" value="50" aria-label="Before and after"></div>
+<div class="calc rv"><h3>🌍 Scale it up — impact estimator</h3><div class="sl"><label>Bots deployed: <b id="v1"></b><input type="range" id="n1" min="1" max="500" value="10"></label><label>Waste per bot per day: <b id="v2"></b> kg<input type="range" id="n2" min="1" max="100" value="10"></label><label>O₂ yield (assumption): <b id="v3"></b> g per kg<input type="range" id="n3" min="1" max="200" value="20"></label></div>
+<div class="res"><div><b id="r1"></b><span>waste removed per year</span></div><div><b id="r2"></b><span>oxygen made per year</span></div><div><b id="r3"></b><span>people’s daily oxygen need covered</span></div></div></div>
+<div class="sdg"><span style="background:#26bde2">SDG 6 · Clean Water</span><span style="background:#bf8b2e">SDG 12 · Responsible Consumption</span><span style="background:#3f7e44">SDG 13 · Climate Action</span><span style="background:#0a97d9">SDG 14 · Life Below Water</span></div>
+<div class="honest">⚖️ <b>Honest science:</b> waste can’t turn into oxygen by itself. Oxygen comes from water (electrolysis, ideally powered by energy recovered from the waste) or from algae photosynthesis fed by nutrients from processed waste. The yield above is an assumption — replace it with what your prototype measures. One prototype won’t change the planet; the goal is a scalable idea.</div></div></section>
+
+<section id="faq"><div class="wrap"><div class="eyebrow rv">FAQ</div><h2 class="rv">Questions, answered</h2><div class="faq rv">
+<details><summary>How does AquaBot find waste?</summary><p>An HC-SR04 ultrasonic sensor pings the water ahead and times the echo (distance = echo time ÷ 58 µs per cm). A short echo means an object is floating in front, so the Uno steers toward it.</p></details>
+<details><summary>Can waste really become oxygen?</summary><p>Not directly. Oxygen is released from water by electrolysis or by algae photosynthesis. The mini factory turns waste into usable energy or nutrients that support that process.</p></details>
+<details><summary>Why is the tunnel underground?</summary><p>It keeps the conveyor protected from weather and keeps the shoreline clear, so the dock stays small and the factory can sit safely on land.</p></details>
+<details><summary>How does the bot find its dock?</summary><p>An IR sensor looks for a beacon on the dock. When the signal appears (pin D13 goes LOW), the bot stops, opens its gate and dumps the load into the hopper.</p></details>
+<details><summary>Why use relays?</summary><p>The Uno’s pins give only a few milliamps. A relay lets that tiny signal switch a high-current motor or pump safely, with the power supply kept separate.</p></details>
+<details><summary>Is it safe to build?</summary><p>Keep electronics waterproof, fuse the battery, vent any gas from the O₂ unit (electrolysis also makes hydrogen), and never use a sealed container or sparks near it.</p></details></div></div></section>
+</main>
+<footer><div class="wrap"><a class="logo" href="#home" style="text-decoration:none">🌊 AQUABOT</a><nav><a href="#how">How it works</a><a href="#demo">Demo</a><a href="#cam">ESP32-CAM</a><a href="#blueprint">Blueprint</a><a href="#connections">Connections</a><a href="#impact">Impact</a><a href="#faq">FAQ</a></nav><a class="btn o" href="https://claude.ai/artifact/4G46RThZ3zysywqLp6ivXF" target="_blank" rel="noopener">🧊 Interactive 3D explorer</a><small>Built with an Arduino Uno · Clean water in, fresh oxygen out</small></div></footer>
+<script>
+(function(){
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const PI=Math.PI,cl=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,t)=>a+(b-a)*t,ss=t=>t*t*(3-2*t);
+const esc=s=>s.replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+/* ---- nav ---- */
+const nav=$('#nav');$('#burger').onclick=()=>nav.classList.toggle('open');
+$$('#menu a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40),{passive:true});
+if('IntersectionObserver' in window){
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)$$('#menu a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+e.target.id))}),{rootMargin:'-45% 0px -50% 0px'});$$('section[id]').forEach(s=>io.observe(s));
+const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}}),{threshold:.12});$$('.rv').forEach(r=>ro.observe(r))}else $$('.rv').forEach(r=>r.classList.add('in'));
+/* ---- how-it-works cards ---- */
+$('#cards').innerHTML=[['📡','Detect','An ultrasonic sonar pings ahead and spots floating waste.'],['🦾','Collect','A servo-driven belt scoop lifts waste into the onboard bin.'],['🚇','Transport','At the dock the bin empties; a conveyor carries waste through a tunnel.'],['🏭','Process','The mini factory sorts, shreds and filters the waste.'],['🫧','Generate O₂','A relay powers the oxygen unit; the gas is stored in a tank.']].map((c,i)=>`<div class="cd rv" style="transition-delay:${i*80}ms"><em>${i+1}</em><i>${c[0]}</i><b>${c[1]}</b><p>${c[2]}</p></div>`).join('');
+$$('#cards .rv').forEach(r=>{if(!('IntersectionObserver' in window))r.classList.add('in')});
+if('IntersectionObserver' in window){const r2=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');r2.unobserve(e.target)}}),{threshold:.12});$$('#cards .rv').forEach(r=>r2.observe(r))}
+/* ---- hero waves ---- */
+const wc=$('#wave'),wx=wc.getContext('2d');let ww=1,wh=1,heroVis=true;
+function wr(){const d=Math.min(devicePixelRatio||1,2);ww=wc.clientWidth||1;wh=wc.clientHeight||1;wc.width=ww*d;wc.height=wh*d;wx.setTransform(d,0,0,d,0,0)}
+function waves(t){wx.clearRect(0,0,ww,wh);
+[[.1,.66],[.9,.66]].forEach(q=>{for(let r=16;r<150;r+=9){wx.strokeStyle=`rgba(90,200,255,${.4-r/500})`;wx.lineWidth=1;wx.beginPath();wx.arc(q[0]*ww,q[1]*wh,r*(1+.03*Math.sin(t*.8+r)),0,7);wx.stroke()}});
+for(let k=0;k<2;k++)for(let i=0;i<44;i++){const f=i/43;wx.strokeStyle=`rgba(${130+f*70|0},${215+f*25|0},255,${.22+.5*Math.sin(f*PI)})`;wx.lineWidth=1;wx.beginPath();
+for(let x=0;x<=ww+8;x+=8){const u=x/ww,y=wh*(.55+.11*Math.sin(u*5+t*.6+k*2+f*1.2)+.07*Math.sin(u*9-t*.8+f*2)*(k?1:-1)+(f-.5)*.2*Math.sin(u*3+t*.4+k));x?wx.lineTo(x,y):wx.moveTo(x,y)}wx.stroke()}}
+wr();addEventListener('resize',wr);
+if('IntersectionObserver' in window)new IntersectionObserver(e=>{heroVis=e[0].isIntersecting}).observe($('#home'));
+/* ---- video ---- */
+const D=68,VW=1000,VH=540,WL=300,vc=$('#vid'),vx=vc.getContext('2d'),PATH=[[612,325],[612,462],[740,462],[740,312]],PS=[];let PL=0;
+for(let i=1;i<4;i++){const l=Math.hypot(PATH[i][0]-PATH[i-1][0],PATH[i][1]-PATH[i-1][1]);PS.push(l);PL+=l}
+const pathAt=s=>{for(let i=0;i<3;i++){if(s<=PS[i]){const f=s/PS[i];return[lerp(PATH[i][0],PATH[i+1][0],f),lerp(PATH[i][1],PATH[i+1][1],f)]}s-=PS[i]}return PATH[3]};
+const lin=(k,t)=>{if(t<=k[0][0])return k[0][1];for(let i=1;i<k.length;i++)if(t<=k[i][0]){const a=k[i-1],b=k[i];return lerp(a[1],b[1],(t-a[0])/(b[0]-a[0]))}return k[k.length-1][1]};
+const trk=(k,t)=>{if(t<=k[0][0])return k[0][1];for(let i=1;i<k.length;i++)if(t<=k[i][0]){const a=k[i-1],b=k[i];return lerp(a[1],b[1],ss((t-a[0])/(b[0]-a[0])))}return k[k.length-1][1]};
+const cam=(k,t)=>{let s=0;for(let i=-4;i<=4;i++)s+=lin(k,t+i*.25);return s/9};
+const BX=[[0,120],[6,120],[11,204],[15.5,204],[19,264],[22.5,264],[26,314],[29.5,314],[38,505],[62,505],[67,300]];
+const IT=[{x:300,k:0,s:11.5},{x:360,k:1,s:19.2},{x:410,k:2,s:26.2}],SP=[39.2,40.4,41.6],TS=55;
+const CK={cx:[[0,500],[6,500],[8.5,190],[12,220],[22,290],[27,320],[30,420],[36,540],[40,560],[43.5,610],[46,690],[49,745],[53,775],[57,880],[62,880],[65,500],[68,500]],cy:[[0,270],[6,270],[8.5,285],[30,285],[38,280],[43.5,330],[46,430],[49,330],[53,255],[62,250],[65,270],[68,270]],z:[[0,1],[6,1],[8.5,2.1],[22,2.2],[27,2],[30,1.5],[36,2.1],[40,2],[43.5,1.5],[46,2],[49,1.9],[53,2],[57,1.9],[62,1.9],[65,1],[68,1]]};
+const CH=[[0,6,'Meet AquaBot','An autonomous boat that skims waste from the water, sends it through a tunnel to a mini factory and runs an oxygen unit — all controlled by one Arduino Uno.','// SEARCH → COLLECT → DELIVER → PROCESS'],
+[6,11.5,'1 · Detect','The HC-SR04 sonar pings the water ahead. A short echo means floating waste, so the Uno locks on and drives the motors toward it.','if (readCm(TRIG1, ECHO1) < WASTE_CM) state = COLLECT;'],
+[11.5,22.5,'2 · Collect','A servo dips the belt scoop into the water and the belt lifts each item up into the bin.','arm.write(20); // lower scoop\narm.write(90); // lift into bin'],
+[22.5,30,'3 · Bin check','A second sonar looks down into the bin. When it reads below the limit, the bin is full and the bot heads home.','if (readCm(TRIG2, ECHO2) < BIN_FULL_CM) state = DELIVER;'],
+[30,38.5,'4 · Return to dock','The IR sensor spots the dock’s beacon and the bot parks exactly at the hopper.','if (digitalRead(DOCK_IR) == LOW) drive(0, 0);'],
+[38.5,43.5,'5 · Dump','The servo raises the gate and the waste drops into the hopper. Gold contacts link the bot’s Uno to the shore relays.','arm.write(150); delay(3000);'],
+[43.5,50,'6 · Tunnel','Relay 1 starts the conveyor and the waste rides underground to the factory.','relay(CONVEYOR, true); delay(CONVEYOR_MS);'],
+[50,56,'7 · Mini factory','The waste is sorted, shredded and filtered; the usable part becomes feed for the oxygen unit.','// factory: shred → filter → feed line'],
+[56,64,'8 · Oxygen','Relay 2 powers the O₂ unit (an electrolyser or an algae reactor). Bubbles rise and oxygen fills the tank. The waste supplies energy or nutrients, not oxygen itself.','relay(O2UNIT, true); delay(O2_MS);'],
+[64,68,'The loop continues','The Uno returns to SEARCH and the cycle repeats: dirty water in, fresh oxygen out.','state = SEARCH;']];
+const botX=t=>trk(BX,t),collected=t=>IT.filter(i=>t>=i.s+2.4).length,dumped=t=>SP.filter(s=>t>=s).length,fillOf=t=>cl((t-52)/10,0,1);
+function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+function gear(c,x,y,r,a){c.save();c.translate(x,y);c.rotate(a);c.strokeStyle='#9fd8ff';c.lineWidth=2.4;c.beginPath();c.arc(0,0,r,0,7);c.stroke();for(let i=0;i<8;i++){c.rotate(PI/4);c.beginPath();c.moveTo(r-1,0);c.lineTo(r+4,0);c.stroke()}c.beginPath();c.moveTo(-r,0);c.lineTo(r,0);c.moveTo(0,-r);c.lineTo(0,r);c.stroke();c.restore()}
+function item(c,k,x,y,r,s){c.save();c.translate(x,y);c.rotate(r);c.scale(s||1,s||1);if(k==0){c.fillStyle='#7dffb0';c.fillRect(-4,-14,8,16);c.fillRect(-2,-19,4,5);c.fillStyle='#ff5c7a';c.fillRect(-2.5,-21,5,2.5)}else if(k==1){c.fillStyle='#f4f4f4';c.beginPath();c.ellipse(0,-7,10,7,0,0,7);c.fill()}else{c.fillStyle='#c0c8d0';c.fillRect(-6,-12,12,13);c.fillStyle='#ff5c7a';c.fillRect(-6,-7,12,3)}c.restore()}
+function bot(c,x,y,t,ang,belt,bin,spin){c.save();c.translate(x,y);
+c.fillStyle='#eaf4ff';rr(c,-62,-4,124,20,10);c.fill();c.fillStyle='#00b3d9';c.fillRect(-54,5,108,4);c.fillStyle='#cfe3f5';c.fillRect(-56,-9,112,6);
+c.fillStyle='#0a6aa8';c.fillRect(-50,-18,28,9);c.fillStyle='#111';c.fillRect(-42,-16,10,5);c.fillStyle=Math.sin(t*9)>0?'#3dffa2':'#145';c.fillRect(-27,-17,3,3);
+c.fillStyle='#23272e';c.fillRect(-19,-16,20,7);
+c.fillStyle='#ff9d2b';c.fillRect(8,-26,36,17);c.fillStyle='rgba(0,0,0,.28)';c.fillRect(11,-23,30,14);bin.forEach((k,j)=>item(c,k,17+j*10,-9,0,.55));
+c.strokeStyle='#9fb4c8';c.lineWidth=2;c.beginPath();c.moveTo(-46,-9);c.lineTo(-46,-34);c.moveTo(-6,-9);c.lineTo(-6,-34);c.stroke();c.fillStyle='#14306e';c.fillRect(-56,-40,56,6);c.strokeStyle='#6a8fe0';c.lineWidth=1;c.beginPath();for(let i=1;i<4;i++){c.moveTo(-56+i*14,-40);c.lineTo(-56+i*14,-34)}c.stroke();
+c.fillStyle='#1b5fa8';c.fillRect(48,-22,10,12);c.fillStyle='#cfd6dd';c.beginPath();c.arc(58,-19,2.6,0,7);c.arc(58,-14,2.6,0,7);c.fill();
+c.save();c.translate(58,-2);c.rotate(ang);c.fillStyle='#222a33';c.fillRect(0,-4,44,8);c.fillStyle='#ffb020';for(let i=0;i<6;i++)c.fillRect(((i*8+belt)%44+44)%44,-5,3,10);c.fillRect(0,-6,44,2);c.fillRect(0,4,44,2);c.restore();
+c.save();c.translate(-68,8);c.fillStyle='#888e96';c.fillRect(-2,-5,14,10);c.rotate(spin);c.strokeStyle='#2b3440';c.lineWidth=3;c.beginPath();for(let i=0;i<3;i++){c.moveTo(0,0);c.lineTo(Math.cos(i*2.09)*10,Math.sin(i*2.09)*10)}c.stroke();c.restore();c.restore()}
+function draw(t){const c=vx;c.setTransform(1.5,0,0,1.5,0,0);c.clearRect(0,0,VW,VH);
+const z=cam(CK.z,t),cx=cam(CK.cx,t),cy=cam(CK.cy,t);c.translate(VW/2,VH/2);c.scale(z,z);c.translate(-cx,-cy);
+let g=c.createLinearGradient(0,-300,0,WL);g.addColorStop(0,'#030a1d');g.addColorStop(1,'#12608a');c.fillStyle=g;c.fillRect(-700,-300,2400,WL+300);
+c.fillStyle='#fff';for(let i=0;i<50;i++){c.globalAlpha=.3+.5*Math.abs(Math.sin(t*.7+i));c.fillRect(-300+(i*173)%1500,-150+(i*61)%420,2,2)}c.globalAlpha=1;
+c.fillStyle='#e8f6ff';c.beginPath();c.arc(120,60,22,0,7);c.fill();
+g=c.createLinearGradient(0,WL,0,WL+400);g.addColorStop(0,'#1aa6d0');g.addColorStop(1,'#031c36');c.fillStyle=g;c.fillRect(-700,WL,1300,700);
+c.strokeStyle='rgba(255,255,255,.35)';c.lineWidth=1.5;for(let r=0;r<3;r++){c.beginPath();for(let x=-700;x<=600;x+=12){const y=WL+r*7+Math.sin(x*.03+t*1.6+r)*2.2;x==-700?c.moveTo(x,y):c.lineTo(x,y)}c.stroke()}
+for(let i=0;i<5;i++){const fx=((t*(14+i*5)+i*130)%700)-80,fy=WL+60+i*28+Math.sin(t+i)*5;c.fillStyle='rgba(255,255,255,.22)';c.beginPath();c.ellipse(fx,fy,9,4,0,0,7);c.fill();c.beginPath();c.moveTo(fx-7,fy);c.lineTo(fx-15,fy-4);c.lineTo(fx-15,fy+4);c.fill()}
+g=c.createLinearGradient(0,WL,0,WL+400);g.addColorStop(0,'#1b3b57');g.addColorStop(1,'#0a1c2e');c.fillStyle=g;c.fillRect(600,WL,1100,700);c.fillStyle='#22a56f';c.fillRect(600,WL-4,1100,7);
+c.lineJoin='round';c.lineCap='round';c.beginPath();PATH.forEach((p,i)=>i?c.lineTo(p[0],p[1]):c.moveTo(p[0],p[1]));c.strokeStyle='#3b6a8c';c.lineWidth=38;c.stroke();c.strokeStyle='#06121d';c.lineWidth=30;c.stroke();c.strokeStyle='rgba(0,229,255,.7)';c.lineWidth=2;c.setLineDash([8,10]);c.lineDashOffset=-(cl(t,40,53)-40)*40;c.stroke();c.setLineDash([]);
+c.fillStyle='#9fd8ff';c.font='bold 10px Poppins,sans-serif';c.fillText('UNDERGROUND TUNNEL',640,488);c.fillText('DOCK',596,258);
+c.fillStyle='#4b7ea3';c.strokeStyle='#37c8ff';c.lineWidth=2;c.beginPath();c.moveTo(584,268);c.lineTo(628,268);c.lineTo(618,304);c.lineTo(594,304);c.closePath();c.fill();c.stroke();c.fillStyle='#ffcf4a';c.fillRect(578,276,6,26);
+if(t>30&&t<44){const b=Math.sin(t*8)>0;c.fillStyle=b?'#ff3355':'#661a28';c.beginPath();c.arc(581,270,4,0,7);c.fill();for(let i=0;i<3;i++){const rr2=((t*30+i*14)%42);c.strokeStyle=`rgba(255,80,110,${1-rr2/42})`;c.beginPath();c.arc(581,270,rr2,PI*.7,PI*1.3);c.stroke()}}
+const act=t>48.2&&t<64,cv=t>40.6&&t<50.5;
+c.fillStyle='#24425f';c.fillRect(690,190,110,110);c.fillStyle='#2b5cff';c.fillRect(684,182,122,10);c.fillStyle='#35516b';c.fillRect(700,150,14,40);
+c.fillStyle='#00ffa3';c.font='bold 9px Poppins,sans-serif';c.fillText('MINI FACTORY',703,206);c.fillStyle='#0b1a26';c.fillRect(702,214,54,38);c.strokeStyle='#9fb4c8';c.lineWidth=1.5;c.strokeRect(702,214,54,38);
+const ga=.8*t+3.2*cl(t-48.5,0,13.5);gear(c,729,233,11,-ga*1.4);gear(c,748,243,7,ga*2);gear(c,780,270,13,ga);gear(c,758,284,8,-ga*1.6);
+c.fillStyle=act?'#00ff88':'#ff3344';c.beginPath();c.arc(792,200,4,0,7);c.fill();
+if(act)for(let i=0;i<5;i++){const u=(t*.5+i*.2)%1;c.fillStyle=`rgba(207,214,221,${.45*(1-u)})`;c.beginPath();c.arc(707+Math.sin(u*5+i)*6,146-u*60,6+u*12,0,7);c.fill()}
+c.fillStyle='rgba(120,255,210,.12)';c.strokeStyle='rgba(160,255,220,.7)';c.lineWidth=2;rr(c,818,170,46,130,10);c.fill();c.stroke();c.fillStyle='rgba(47,224,176,.35)';c.fillRect(822,190,38,106);c.fillStyle='#35516b';c.fillRect(812,296,56,8);c.fillRect(824,162,34,8);
+c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.moveTo(833,200);c.lineTo(833,290);c.moveTo(849,200);c.lineTo(849,290);c.stroke();
+if(t>52&&t<66)for(let i=0;i<14;i++){const bx=826+((i*37)%32)+3,by=294-((t*(.25+((i*13)%10)/40)+i*.17)%1)*118;c.strokeStyle='rgba(235,255,248,.9)';c.lineWidth=1.2;c.beginPath();c.arc(bx,by,2+(i*7)%3,0,7);c.stroke()}
+c.fillStyle='#9fb4c8';c.fillRect(800,266,18,6);c.fillRect(864,278,18,6);
+const fl=fillOf(t);c.save();rr(c,880,240,92,56,28);c.fillStyle='#0d8f5e';c.fill();c.clip();g=c.createLinearGradient(0,296,0,240);g.addColorStop(0,'#00a86b');g.addColorStop(1,'#00ffa3');c.fillStyle=g;c.fillRect(880,296-52*fl,92,52*fl);c.restore();c.strokeStyle='#0b6f4a';c.lineWidth=2;rr(c,880,240,92,56,28);c.stroke();
+c.fillStyle='#fff';c.font='bold 11px Poppins,sans-serif';c.fillText('O₂',915,272);c.beginPath();c.arc(930,234,8,0,7);c.fill();c.strokeStyle='#ff3355';c.lineWidth=1.6;c.beginPath();c.moveTo(930,234);c.lineTo(930+Math.cos(PI*(1.2+1.6*fl))*7,234+Math.sin(PI*(1.2+1.6*fl))*7);c.stroke();c.fillStyle='#35516b';c.fillRect(890,296,6,8);c.fillRect(956,296,6,8);
+[[650,'RELAY 1',cv],[836,'RELAY 2',act]].forEach(r=>{c.fillStyle='#1a8f4a';c.fillRect(r[0],288,28,11);c.fillStyle='#2a60d8';c.fillRect(r[0]+3,290,9,7);c.fillStyle=r[2]?'#3dffa2':'#335544';c.beginPath();c.arc(r[0]+22,293,2.5,0,7);c.fill();c.fillStyle='#9fd8ff';c.font='7px Poppins,sans-serif';c.fillText(r[1],r[0],284)});
+const bx=botX(t),mv=Math.abs(botX(t+.1)-bx)>.5;
+IT.forEach(it=>{const f0=it.s+1.1,f1=it.s+2.4,by=WL-3+Math.sin(t*1.7+it.x)*2.2;if(t<f0)item(c,it.k,it.x,by,Math.sin(t+it.x)*.2);else if(t<f1){const u=(t-f0)/1.3;item(c,it.k,lerp(it.x,botX(t)+26,u),lerp(by,WL-22,u)-Math.sin(PI*u)*40,u*3)}});
+if(t>6.5&&t<29.5){const idx=t<15?0:t<22.5?1:2,tg=IT[idx],sx=bx+60;c.fillStyle='rgba(0,229,255,.1)';c.beginPath();c.moveTo(sx,WL-16);c.arc(sx,WL-16,150,-.2,.2);c.closePath();c.fill();for(let i=0;i<3;i++){const r=(t*70+i*50)%150;c.strokeStyle=`rgba(0,229,255,${.8*(1-r/150)})`;c.lineWidth=1.5;c.beginPath();c.arc(sx,WL-16,r,-.22,.22);c.stroke()}
+if(t>8&&!(t>=tg.s+1.1)&&((idx==0&&t<13)||(idx==1&&t>16&&t<21)||(idx==2&&t>23))){c.strokeStyle='#b6ff3d';c.lineWidth=2;c.setLineDash([5,4]);c.lineDashOffset=-t*10;c.beginPath();c.arc(tg.x,WL-6,17+Math.sin(t*6)*2,0,7);c.stroke();c.setLineDash([])}}
+if(mv){c.strokeStyle='rgba(255,255,255,.4)';c.lineWidth=1.2;for(let i=0;i<3;i++){c.beginPath();c.ellipse(bx-74-i*14,WL+2,10+i*5,2.5,0,0,7);c.stroke()}}
+let ang=.55+.4*Math.max(...IT.map(it=>Math.sin(PI*cl((t-it.s)/(3.3),0,1))));const gt=ss(cl((t-38)/.8,0,1))*(1-ss(cl((t-43.5)/.8,0,1)));ang-=.65*gt;
+const dm=dumped(t),bc=collected(t)-dm,binK=[];for(let j=0;j<bc;j++)binK.push(IT[dm+j].k);
+bot(c,bx,WL-2+Math.sin(t*2)*2,t,ang,bx*.3+t*10,binK,bx*.25+t*2);
+SP.forEach((ts,i)=>{if(t<ts)return;const e=t-ts;let px,py;if(e<.9){const u=e/.9,b0=[botX(ts)+26,WL-22];px=lerp(b0[0],606,u);py=lerp(b0[1],WL-34,u)-Math.sin(PI*u)*40}else if(e<1.4){const u=(e-.9)/.5;px=lerp(606,612,u);py=lerp(WL-34,325,u)}else{const s=(e-1.4)*TS;if(s>=PL)return;const p=pathAt(s);px=p[0];py=p[1]}
+c.shadowColor='#ffcf4a';c.shadowBlur=12;c.fillStyle=['#7dffb0','#f4f4f4','#c0c8d0'][i];c.fillRect(px-5,py-5,10,10);c.shadowBlur=0});
+const pr=SP.filter(s=>t>=s+1.4+PL/TS).length;
+$('#vhud').textContent=`♻ collected ${collected(t)} · 🗑 bin ${bc} · 🏭 processed ${pr} · 🫧 O₂ ${(fl*2.7).toFixed(1)} L (sim)`}
+/* player */
+let T=0,playing=false,last=0,vvis=true,dirty=true,seeking=false,curCh=-1;
+const fmt=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
+$('#chs').innerHTML=CH.map((c,i)=>`<button data-i="${i}">${c[2]}</button>`).join('');
+function setCap(i){if(i==curCh)return;curCh=i;const c=CH[i],h=`<small>CHAPTER ${i+1} / ${CH.length}</small><b>${c[2]}</b><span>${c[3]}</span><code>${esc(c[4])}</code>`;$('#cap1').innerHTML=h;$('#cap2').innerHTML=h;$$('#chs button').forEach((b,j)=>b.classList.toggle('on',j==i))}
+function render(){draw(T);let i=CH.findIndex(c=>T>=c[0]&&T<c[1]);if(i<0)i=CH.length-1;setCap(i);if(!seeking)$('#vseek').value=Math.round(T*10);$('#vtime').textContent=`${fmt(T)} / ${fmt(D)}`}
+function setPlay(v){playing=v;$('#vpp').textContent=v?'⏸':'▶';$('#vbig').style.display=v||T>.5?'none':'block';if(v&&T>=D-.05)T=0}
+$('#vbig').onclick=()=>{setPlay(true)};
+$('#vpp').onclick=()=>setPlay(!playing);
+$('#vseek').addEventListener('input',e=>{seeking=true;T=+e.target.value/10;dirty=true;$('#vbig').style.display='none'});
+$('#vseek').addEventListener('change',()=>{seeking=false});
+$('#vsp').onchange=()=>{};
+$('#chs').onclick=e=>{const b=e.target.closest('button');if(!b)return;T=CH[+b.dataset.i][0]+.01;dirty=true;$('#vbig').style.display='none';setPlay(true)};
+$('#vfs').onclick=()=>{try{const p=$('#player');if(document.fullscreenElement)document.exitFullscreen();else if(p.requestFullscreen)p.requestFullscreen()}catch(e){}};
+if('IntersectionObserver' in window)new IntersectionObserver(e=>{vvis=e[0].isIntersecting}).observe($('#player'));
+function frame(ts){const dt=Math.min(.1,(ts-last)/1000||0);last=ts;
+if(heroVis)waves(ts/1000);
+if(vvis&&(playing||dirty)){if(playing){T+=dt*(+$('#vsp').value);if(T>=D){T=D;setPlay(false)}}render();dirty=false}
+requestAnimationFrame(frame)}
+/* ---- blueprint ---- */
+const BP=[[1,'Floating hull','Twin pontoons keep the bot afloat and stable and carry every module.'],[2,'Arduino Uno','The brain: runs the SEARCH → COLLECT → DELIVER → PROCESS state machine.'],[3,'Sonar sensors','The front HC-SR04 finds waste; a second one watches the bin level.'],[4,'Waste bin','A mesh bin that holds waste until the bot docks.'],[5,'Scoop + servo','The belt scoop lifts waste into the bin; the servo also opens the dump gate.'],[6,'Motors + props','Two DC motors steer by differential speed.'],[7,'Solar panel','Tops up the battery while the bot works.'],[8,'Dock + hopper','The funnel that receives the waste; carries the IR beacon and contacts.'],[9,'Tunnel conveyor','An underground conveyor that moves the waste to the factory.'],[10,'Mini factory','Sorts, shreds and filters waste into feed for the O₂ unit.'],[11,'O₂ unit','An electrolyser or algae reactor that makes oxygen.'],[12,'O₂ tank','Stores the oxygen, with a gauge and relief valve.'],[13,'Relays','Two relay modules switch the conveyor and the O₂ unit.'],[14,'Driver + battery','The L298N lets the Uno drive the motors; the battery powers everything.']];
+const CO1={1:[150,238,150,276],2:[109,178,60,150],3:[232,180,250,130],4:[196,172,196,120],5:[285,222,330,185],6:[44,222,30,268],7:[146,142,146,100],8:[590,205,590,150],9:[680,340,680,376],10:[740,125,690,92],11:[870,135,870,92],12:[940,195,940,150],13:[672,220,640,176]};
+const CO2={1:[220,30,220,12],2:[80,103,46,108],14:[105,178,46,160],7:[150,74,150,54],4:[276,116,276,164],3:[348,105,372,58],5:[410,130,410,214],6:[22,53,22,16]};
+const coHtml=o=>Object.keys(o).map(n=>{const a=o[n];return`<g class="co" data-bp="${n}"><path d="M${a[2]} ${a[3]}L${a[0]} ${a[1]}"/><circle cx="${a[2]}" cy="${a[3]}" r="10"/><text x="${a[2]}" y="${a[3]+4}">${n}</text></g>`}).join('');
+$('#co1').innerHTML=coHtml(CO1);$('#co2').innerHTML=coHtml(CO2);
+$('#bpl').innerHTML=BP.map(b=>`<li data-n="${b[0]}"><b>${b[0]}</b>${b[1]}</li>`).join('');
+function bpOn(n){$$('#bp1,#bp2').forEach(s=>s.classList.toggle('dm',!!n));$$('[data-bp]').forEach(g=>g.classList.toggle('on',n&&g.dataset.bp==n));$$('#bpl li').forEach(l=>l.classList.toggle('on',n&&l.dataset.n==n));const b=BP.find(x=>x[0]==n);$('#bpi').innerHTML=b?`<b style="color:#ffd166">${b[0]} · ${b[1]}</b><br>${b[2]}`:'Hover a part to read what it does.'}
+$$('#bp1,#bp2').forEach(s=>{s.addEventListener('pointerover',e=>{const g=e.target.closest('[data-bp]');bpOn(g?g.dataset.bp:null)});s.addEventListener('pointerleave',()=>bpOn(null))});
+$('#bpl').addEventListener('pointerover',e=>{const l=e.target.closest('li');if(l)bpOn(l.dataset.n)});$('#bpl').addEventListener('pointerleave',()=>bpOn(null));
+/* ---- wiring ---- */
+const WC=[['ultra1','Front sonar HC-SR04',30,100,200,56,'L',160,'D2→TRIG · D3→ECHO · 5V→VCC · GND→GND','#00e5ff','Finds floating waste ahead','D2·D3'],
+['ultra2','Bin sonar HC-SR04',30,185,200,56,'L',215,'D4→TRIG · D7→ECHO · 5V→VCC · GND→GND','#3a9bff','Measures how full the bin is','D4·D7'],
+['ir','Dock IR sensor',30,270,200,56,'L',270,'D13→OUT · 5V→VCC · GND→GND','#ff5c7a','Finds the dock beacon','D13'],
+['turb','Turbidity sensor',30,355,200,56,'L',325,'A0→signal · 5V→VCC · GND→GND','#a88bff','Logs water quality','A0'],
+['buzzer','Buzzer + LED',30,440,200,56,'L',380,'A3→(+) · GND→(−)','#ffffff','Cycle-finished beep','A3'],
+['l298n','L298N motor driver',770,20,200,56,'R',160,'D5→ENA · D8→IN1 · D9→IN2 · D6→ENB · D10→IN3 · D11→IN4 · GND','#ffb020','Drives the two motors','D5–D11'],
+['servo','SG90 servo',770,180,200,56,'R',215,'D12→signal · 5V→red · GND→brown','#ff4fd8','Scoop arm + dump gate','D12'],
+['relay1','Relay 1 · conveyor',770,265,200,56,'R',270,'A1→IN · 5V→VCC · GND (through the dock contacts)','#3dffa2','Switches the tunnel conveyor','A1'],
+['relay2','Relay 2 · O₂ unit',770,350,200,56,'R',325,'A2→IN · 5V→VCC · GND (through the dock contacts)','#b6ff3d','Switches the O₂ unit','A2']];
+const WX=[['motors','DC motors',770,100,200,48,'OUT1/OUT2→left motor · OUT3/OUT4→right motor','Steer and propel the bot'],['battery','Battery pack 11–12 V',400,20,200,50,'Battery +→L298N 12V in · −→common GND (shared with Uno GND)','Powers motors, servo and Uno'],['solar','Solar panel + charger',140,20,190,50,'Panel→charge controller→battery','Tops up the battery']];
+function wiring(){let h='',w='';
+h+=`<rect x="380" y="110" width="240" height="350" rx="18" fill="rgba(10,106,168,.35)" stroke="#37c8ff" stroke-width="2"/><rect x="450" y="190" width="100" height="60" rx="6" fill="#111" stroke="#37c8ff"/><text x="500" y="226" text-anchor="middle" font-size="11" fill="#9fd8ff">ATmega328P</text><text x="500" y="300" text-anchor="middle" font-size="20" font-weight="700">ARDUINO UNO</text><text x="500" y="322" text-anchor="middle" font-size="11" fill="#9cc3e6">5 V logic · 14 digital · 6 analog</text><text x="500" y="440" text-anchor="middle" font-size="10" fill="#9cc3e6">Join every GND to the Uno GND</text>`;
+WC.forEach(c=>{const L=c[6]=='L',x1=L?c[2]+c[4]:620,y1=L?c[3]+c[5]/2:c[7],x2=L?380:c[2],y2=L?c[7]:c[3]+c[5]/2,xm=(x1+x2)/2,ym=(y1+y2)/2;
+w+=`<g class="wg" data-id="${c[0]}"><path class="wire" stroke="${c[9]}" d="M${x1} ${y1}C${xm} ${y1} ${xm} ${y2} ${x2} ${y2}"/><circle cx="${L?380:620}" cy="${c[7]}" r="4" fill="${c[9]}"/><rect x="${xm-28}" y="${ym-10}" width="56" height="20" rx="10" fill="#06223f" stroke="${c[9]}"/><text x="${xm}" y="${ym+4}" text-anchor="middle" font-size="10">${c[11]}</text><rect class="bx" x="${c[2]}" y="${c[3]}" width="${c[4]}" height="${c[5]}" rx="12"/><text x="${c[2]+14}" y="${c[3]+24}" font-size="13" font-weight="600">${c[1]}</text><text x="${c[2]+14}" y="${c[3]+43}" font-size="10" fill="#9cc3e6">${c[10]}</text>`;
+if(c[0]=='relay1'||c[0]=='relay2')w+=`<rect x="${xm+34}" y="${ym-6}" width="12" height="12" fill="#ffcf4a"/>`;w+='</g>'});
+WX.forEach(c=>{w+=`<g class="wg" data-id="${c[0]}"><rect class="bx" x="${c[2]}" y="${c[3]}" width="${c[4]}" height="${c[5]}" rx="12"/><text x="${c[2]+14}" y="${c[3]+22}" font-size="13" font-weight="600">${c[1]}</text><text x="${c[2]+14}" y="${c[3]+40}" font-size="10" fill="#9cc3e6">${c[7]}</text>`+(c[0]=='motors'?`<path class="wire" stroke="#ffe14a" d="M870 76V100"/>`:c[0]=='battery'?`<path class="wire" stroke="#ff2d55" d="M600 45H770"/><text x="685" y="38" font-size="10" text-anchor="middle" fill="#ff8aa0">12 V + GND</text>`:`<path class="wire" stroke="#ffb020" d="M330 45H400"/>`)+'</g>'});
+w+=`<text x="500" y="520" text-anchor="middle" font-size="11" fill="#9cc3e6">Gold squares: signals pass through the dock contacts to the shore relays (or use a wireless link)</text>`;
+$('#ws').innerHTML=h+w}
+wiring();
+const WI={};WC.forEach(c=>WI[c[0]]=[c[1],c[10],c[8]]);WX.forEach(c=>WI[c[0]]=[c[1],c[7],c[6]]);
+$('#wt').innerHTML=Object.keys(WI).map(k=>`<tr><td><b>${WI[k][0]}</b></td><td><code>${WI[k][2]}</code></td><td>${WI[k][1]}</td></tr>`).join('');
+let pinned=null;
+function wOn(id){$('#ws').classList.toggle('dm',!!id);$$('#ws .wg').forEach(g=>g.classList.toggle('on',g.dataset.id==id));const d=WI[id];$('#wi').innerHTML=d?`<b>${d[0]}</b> — ${d[1]}<ul>${d[2].split(' · ').map(p=>`<li>${p}</li>`).join('')}</ul>`:'Hover or tap a component to see its pins.'}
+$('#ws').addEventListener('pointerover',e=>{const g=e.target.closest('.wg');if(g)wOn(g.dataset.id)});
+$('#ws').addEventListener('pointerleave',()=>wOn(pinned));
+$('#ws').addEventListener('click',e=>{const g=e.target.closest('.wg');pinned=g&&g.dataset.id!=pinned?g.dataset.id:null;wOn(pinned)});
+/* code */
+const CODE=`// AquaBot - Arduino Uno controller
+#include <Servo.h>
+
+const int TRIG1 = 2, ECHO1 = 3;   // front sonar: finds waste
+const int TRIG2 = 4, ECHO2 = 7;   // bin sonar: how full
+const int ENA = 5, IN1 = 8, IN2 = 9;    // L298N left motor
+const int ENB = 6, IN3 = 10, IN4 = 11;  // L298N right motor
+const int SERVO_PIN = 12, DOCK_IR = 13;
+const int TURB = A0, CONVEYOR = A1, O2UNIT = A2, BUZZ = A3;
+
+const int WASTE_CM = 40;       // waste closer than this
+const int BIN_FULL_CM = 6;     // bin sonar reading when full
+const unsigned long CONVEYOR_MS = 8000, O2_MS = 20000;
+
+enum State { SEARCH, COLLECT, DELIVER, PROCESS };
+State state = SEARCH;
+Servo arm;
+unsigned long lastTurn = 0;
+
+long readCm(int trig, int echo) {
+  digitalWrite(trig, LOW);  delayMicroseconds(2);
+  digitalWrite(trig, HIGH); delayMicroseconds(10);
+  digitalWrite(trig, LOW);
+  long us = pulseIn(echo, HIGH, 30000);
+  return us ? us / 58 : 999;
+}
+
+void drive(int left, int right) {      // -255 .. 255
+  digitalWrite(IN1, left > 0);  digitalWrite(IN2, left < 0);
+  digitalWrite(IN3, right > 0); digitalWrite(IN4, right < 0);
+  analogWrite(ENA, abs(left));  analogWrite(ENB, abs(right));
+}
+
+void relay(int pin, bool on) {         // most relay boards are active-LOW
+  digitalWrite(pin, on ? LOW : HIGH);
+}
+
+void setup() {
+  pinMode(TRIG1, OUTPUT); pinMode(ECHO1, INPUT);
+  pinMode(TRIG2, OUTPUT); pinMode(ECHO2, INPUT);
+  pinMode(ENA, OUTPUT); pinMode(ENB, OUTPUT);
+  pinMode(IN1, OUTPUT); pinMode(IN2, OUTPUT);
+  pinMode(IN3, OUTPUT); pinMode(IN4, OUTPUT);
+  pinMode(DOCK_IR, INPUT);
+  pinMode(CONVEYOR, OUTPUT); pinMode(O2UNIT, OUTPUT); pinMode(BUZZ, OUTPUT);
+  relay(CONVEYOR, false); relay(O2UNIT, false);
+  arm.attach(SERVO_PIN); arm.write(90);   // 90 = raised
+  Serial.begin(9600);
+}
+
+void loop() {
+  switch (state) {
+    case SEARCH:
+      drive(150, 150);
+      if (millis() - lastTurn > 4000) {   // sweep so we don't miss waste
+        drive(150, -150); delay(500); lastTurn = millis();
+      }
+      if (readCm(TRIG2, ECHO2) < BIN_FULL_CM) state = DELIVER;
+      else if (readCm(TRIG1, ECHO1) < WASTE_CM) { drive(0, 0); state = COLLECT; }
+      break;
+
+    case COLLECT:
+      arm.write(20);  delay(900);         // lower scoop
+      drive(120, 120); delay(700);        // push forward
+      arm.write(90);  delay(700);         // lift waste into bin
+      drive(0, 0);
+      Serial.println(analogRead(TURB));   // log water quality
+      state = SEARCH;
+      break;
+
+    case DELIVER:
+      drive(150, 150);                    // head to dock beacon
+      if (digitalRead(DOCK_IR) == LOW) {  // beacon seen
+        drive(0, 0);
+        arm.write(150); delay(3000);      // open gate: dump into hopper
+        arm.write(90);
+        state = PROCESS;
+      }
+      break;
+
+    case PROCESS:
+      relay(CONVEYOR, true); delay(CONVEYOR_MS);  // tunnel conveyor
+      relay(CONVEYOR, false);
+      relay(O2UNIT, true);   delay(O2_MS);        // O2 generation
+      relay(O2UNIT, false);
+      tone(BUZZ, 1000, 300);                      // cycle finished
+      state = SEARCH;
+      break;
+  }
+}
+`;
+$('#cd').innerHTML=esc(CODE).replace(/(\/\/.*)|\b(void|int|long|bool|const|enum|case|break|if|else|switch|while|return|true|false|HIGH|LOW|OUTPUT|INPUT|unsigned)\b|\b(\d+)\b|\b(digitalWrite|analogWrite|pinMode|delay|pulseIn|digitalRead|analogRead|millis|Serial|attach|begin|println|write|delayMicroseconds|abs|tone)\b/g,(m,c1,k,n)=>c1?`<i class="c">${m}</i>`:k?`<i class="k">${m}</i>`:n?`<i class="n">${m}</i>`:`<i class="f">${m}</i>`);
+$('#cp').onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(CODE);ok=true}catch(e){const t=document.createElement('textarea');t.value=CODE;document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(e2){}t.remove()}$('#cp').textContent=ok?'✔ Copied!':'Select the code and copy';setTimeout(()=>$('#cp').textContent='📋 Copy code',2000)};
+/* ---- impact ---- */
+function imp(){const n=+$('#n1').value,k=+$('#n2').value,y=+$('#n3').value,wy=n*k*365/1000,g=n*k*y,o=g*365/1000,ppl=g*.7/550;
+$('#v1').textContent=n;$('#v2').textContent=k;$('#v3').textContent=y;
+$('#r1').textContent=wy>=1000?(wy/1000).toFixed(1)+' kt':wy.toFixed(1)+' t';$('#r2').textContent=o>=1000?(o/1000).toFixed(1)+' t':o.toFixed(0)+' kg';$('#r3').textContent=ppl>=1000?(ppl/1000).toFixed(1)+'k':ppl.toFixed(1)}
+$$('#n1,#n2,#n3').forEach(i=>i.addEventListener('input',imp));imp();
+$('#bar').addEventListener('input',e=>$('#ba').style.setProperty('--p',e.target.value+'%'));
+render();requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),cv=$('#zcv'),c=cv.getContext('2d'),W=640,H=480,DUR=7.5,PI=Math.PI;
+const cl=(v,a,b)=>Math.min(b,Math.max(a,v)),lerp=(a,b,u)=>a+(b-a)*u,ss=u=>u*u*(3-2*u);
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* name, kind, plastic score */
+const OB=[['plastic bottle','b',.94],['leaf','l',.06],['plastic bag','g',.88],['wood stick','s',.08],['plastic cup (blurry)','c',.72],['plastic bottle','b',.91]];
+const BS={b:[40,96],l:[84,44],g:[78,70],s:[110,24],c:[56,60]};
+const dec=o=>o[2]>=.8,lab=o=>o[2]>=.5?['PLASTIC WASTE',o[2]]:['OTHER',1-o[2]];
+function shape(k){
+if(k=='b'){c.fillStyle='rgba(190,235,255,.8)';c.beginPath();c.roundRect(-14,-34,28,62,10);c.fill();c.fillRect(-8,-42,16,10);c.fillStyle='#2b7fff';c.fillRect(-8,-48,16,7);c.fillStyle='#e9f7ff';c.fillRect(-14,-6,28,16)}
+else if(k=='l'){c.fillStyle='#4fae4a';c.beginPath();c.ellipse(0,0,38,16,.3,0,7);c.fill();c.strokeStyle='#2c7a30';c.lineWidth=2;c.beginPath();c.moveTo(-34,8);c.lineTo(34,-8);c.stroke()}
+else if(k=='g'){c.fillStyle='rgba(242,242,242,.85)';c.beginPath();c.ellipse(0,6,34,24,0,0,7);c.fill();c.strokeStyle='rgba(242,242,242,.85)';c.lineWidth=4;c.beginPath();c.arc(-14,-14,10,PI,0);c.arc(14,-14,10,PI,0);c.stroke()}
+else if(k=='s'){c.rotate(.25);c.fillStyle='#8a5a2b';c.fillRect(-52,-6,104,12);c.fillRect(10,-14,6,10)}
+else{c.fillStyle='rgba(245,245,245,.85)';c.beginPath();c.moveTo(-26,-28);c.lineTo(26,-28);c.lineTo(18,28);c.lineTo(-18,28);c.closePath();c.fill();c.fillStyle='rgba(200,200,200,.9)';c.beginPath();c.ellipse(0,-28,26,6,0,0,7);c.fill()}}
+function pos(i,p){const o=OB[i%6],a=cl(p/4.8,0,1);let x=190+((i*97)%260)+Math.sin(p*1.3+i)*8,y=150+170*a+Math.sin(p*2)*3,s=.5+.8*a,al=1;
+const e=cl((p-4.8)/1.6,0,1);
+if(e>0){if(dec(o)){x=lerp(x,320,ss(e));y=lerp(y,440,ss(e));s=lerp(s,.5,ss(e));al=1-ss(cl((e-.6)/.4,0,1))}else{x+=(i%2?-1:1)*e*e*440;y+=e*40;s+=e*.3}}
+return{x,y,s,al}}
+function evs(i){const o=OB[i%6],d=dec(o),sc=o[2].toFixed(2),n=i+1,r=[[1.8,`cam    capture frame #${n}`],[2.4,'model  inference started'],[3.6,`model  plastic=${sc}`],[3.9,`logic  ${sc} ${d?'>=':'<'} 0.80 -> ${d?'COLLECT':'IGNORE'}`]];
+if(d)r.push([4.5,'tx     send "C" to Uno'],[5.2,'uno    ACK, state=COLLECT']);return r}
+let T=0,pl=!matchMedia('(prefers-reduced-motion:reduce)').matches,vis=true,last=0,dirty=true,lk='',stk='',snap=-1;
+const stl=[...document.querySelectorAll('#zst li')];
+function draw(){const idx=Math.floor(T/DUR),p=T-idx*DUR,o=OB[idx%6],d=dec(o),L=lab(o),col=d?'#00ff88':'#ffb020',t=T;
+let g=c.createLinearGradient(0,0,0,H);g.addColorStop(0,'#5fc3e8');g.addColorStop(.45,'#1b86b5');g.addColorStop(1,'#073a5e');c.fillStyle=g;c.fillRect(0,0,W,H);
+for(let i=0;i<30;i++){const y=30+(i*53)%400,x=(i*127+t*(6+i%4*3))%W,len=14+y/12;c.strokeStyle=`rgba(255,255,255,${.1+.12*Math.sin(t*1.5+i)})`;c.lineWidth=1.5;c.beginPath();c.moveTo(x,y);c.lineTo(x+len,y);c.stroke()}
+const q=pos(idx,p),bw=BS[o[1]][0]*q.s*.62+14,bh=BS[o[1]][1]*q.s*.62+14;
+c.save();c.globalAlpha=q.al;c.translate(q.x,q.y);c.rotate(Math.sin(t*1.7+idx)*.08);c.scale(q.s,q.s);if(o[1]=='c'&&c.filter!==undefined)c.filter='blur(1.4px)';shape(o[1]);c.restore();
+c.fillStyle='#0b1a26';c.beginPath();c.moveTo(200,H);c.lineTo(250,H-34);c.lineTo(390,H-34);c.lineTo(440,H);c.fill();c.fillStyle='#ffb020';c.fillRect(250,H-36,140,4);c.fillStyle='#9fd8ff';c.font='bold 10px Poppins,sans-serif';c.textAlign='center';c.fillText('SCOOP',320,H-14);
+const bx=q.x-bw/2,by=q.y-bh/2,show=p>=2.2&&p<6.6&&q.al>.05;
+if(p>=1.8&&p<2.1){c.fillStyle=`rgba(255,255,255,${.7*(1-(p-1.8)/.3)})`;c.fillRect(0,0,W,H)}
+if(show){c.lineWidth=2.5;if(p<3.6){c.strokeStyle='#fff';c.setLineDash([6,5]);c.strokeRect(bx,by,bw,bh);c.setLineDash([]);
+if(p>=2.4){c.strokeStyle='rgba(255,255,255,.28)';c.lineWidth=1;for(let k=1;k<8;k++){c.beginPath();c.moveTo(bx+bw*k/8,by);c.lineTo(bx+bw*k/8,by+bh);c.moveTo(bx,by+bh*k/8);c.lineTo(bx+bw,by+bh*k/8);c.stroke()}
+const sy=by+bh*(.5+.5*Math.sin((p-2.4)*PI*2.6));c.fillStyle='rgba(0,229,255,.8)';c.fillRect(bx-6,sy-1.5,bw+12,3)}
+c.fillStyle='#fff';c.font='bold 12px ui-monospace,Menlo,Consolas,monospace';c.textAlign='left';c.fillText('analysing…',bx,by-8)}
+else{c.strokeStyle=col;c.strokeRect(bx,by,bw,bh);const tx=`${L[0]} ${Math.round(L[1]*100)}%`;c.font='bold 12px ui-monospace,Menlo,Consolas,monospace';c.textAlign='left';const tw=c.measureText(tx).width+12;c.fillStyle=col;c.fillRect(bx,by-22,tw,20);c.fillStyle='#02161f';c.fillText(tx,bx+6,by-8)}}
+/* HUD */
+c.strokeStyle='rgba(255,255,255,.85)';c.lineWidth=2.5;[[14,14,1,1],[W-14,14,-1,1],[14,H-14,1,-1],[W-14,H-14,-1,-1]].forEach(a=>{c.beginPath();c.moveTo(a[0]+a[2]*26,a[1]);c.lineTo(a[0],a[1]);c.lineTo(a[0],a[1]+a[3]*26);c.stroke()});
+c.fillStyle='rgba(3,10,29,.7)';c.fillRect(24,24,208,38);c.fillStyle='#cfeaff';c.font='11px ui-monospace,Menlo,Consolas,monospace';c.textAlign='left';c.fillText('ESP32-CAM · OV2640',32,40);c.fillText('QVGA 320×240 · RGB565',32,55);
+c.fillStyle=Math.sin(t*5)>0?'#ff3355':'#661a28';c.beginPath();c.arc(W-92,38,6,0,7);c.fill();c.fillStyle='#fff';c.font='bold 12px ui-monospace,Menlo,Consolas,monospace';c.fillText('LIVE',W-80,43);
+let bn='SCANNING…',bc='#00e5ff';
+if(p>=1.8&&p<2.4)bn='📸 CAPTURE';else if(p>=2.4&&p<3.6)bn='RUNNING MODEL…';else if(p>=3.6&&p<5.6){bc=col;bn=d?'DECISION: COLLECT ✔':(o[2]>=.5?'DECISION: IGNORE · below 80%':'DECISION: IGNORE · not plastic')}
+c.font='bold 15px Poppins,sans-serif';const bwid=c.measureText(bn).width+28;c.fillStyle='rgba(3,16,34,.85)';c.strokeStyle=bc;c.lineWidth=1.5;c.beginPath();c.roundRect(W/2-bwid/2,H-98,bwid,32,16);c.fill();c.stroke();c.fillStyle=bc;c.textAlign='center';c.fillText(bn,W/2,H-77);
+if(d&&p>=4.4&&p<5.6){const u=cl((p-4.4)/.8,0,1);c.strokeStyle='#ffcf4a';c.lineWidth=2;c.setLineDash([6,5]);c.lineDashOffset=-t*30;c.beginPath();c.moveTo(60,H-130);c.lineTo(510,H-130);c.stroke();c.setLineDash([]);c.fillStyle='#ffcf4a';c.fillRect(lerp(60,500,u)-9,H-139,18,18);c.fillStyle='#02161f';c.font='bold 12px ui-monospace,monospace';c.fillText('C',lerp(60,500,u),H-126);
+c.fillStyle='rgba(3,16,34,.85)';c.strokeStyle=p>=5.2?'#00ff88':'#37c8ff';c.beginPath();c.roundRect(520,H-150,100,40,8);c.fill();c.stroke();c.fillStyle='#fff';c.font='bold 11px Poppins,sans-serif';c.fillText('ARDUINO UNO',570,H-126);if(p>=5.2){c.fillStyle='#00ff88';c.fillText('ACK ✔',570,H-114)}c.fillStyle='#ffcf4a';c.font='10px ui-monospace,monospace';c.fillText('ESP32-CAM',60,H-142)}
+if(p>=2.2&&snap!=idx){snap=idx}
+/* side panel */
+const st=p<1.8?-1:p<2.4?0:p<3.6?1:p<4.4?2:p<5.6?3:-1,key=st+'|'+(d||st<3);if(key!=stk){stk=key;stl.forEach((li,j)=>li.classList.toggle('on',j==st))}
+const k=p<2.4?0:ss(cl((p-2.4)/1.2,0,1)),ps=lerp(.5,o[2],k),pv=p<2.4?null:ps;
+$('#zp1').textContent=pv==null?'--':Math.round(pv*100)+'%';$('#zp2').textContent=pv==null?'--':Math.round((1-pv)*100)+'%';$('#zb1').style.width=(pv==null?0:pv*100)+'%';$('#zb2').style.width=(pv==null?0:(1-pv)*100)+'%';
+let col2=0,ign=0;for(let i=0;i<idx;i++){dec(OB[i%6])?col2++:ign++}if(d&&p>=4.5)col2++;if(!d&&p>=3.9)ign++;
+$('#zf1').textContent=idx+(p>=1.8?1:0);$('#zf2').textContent=col2;$('#zf3').textContent=ign;
+$('#zt').textContent=`object ${idx%6+1}/6 · ${o[0]}`;
+let lines=[];if(idx>0)evs(idx-1).forEach(e=>lines.push(e[1]));evs(idx).forEach(e=>{if(p>=e[0])lines.push(e[1])});lines=lines.slice(-9);const nk=idx+':'+lines.length;
+if(nk!=lk){lk=nk;$('#zterm').innerHTML=lines.map(l=>`<span class="${/COLLECT|"C"/.test(l)?'g':/IGNORE/.test(l)?'a':''}">${esc(l)}</span>`).join('\n')}}
+function frame(ts){const dt=Math.min(.1,(ts-last)/1000||0);last=ts;if(vis&&(pl||dirty)){if(pl)T+=dt;draw();dirty=false}requestAnimationFrame(frame)}
+$('#zpp').onclick=()=>{pl=!pl;$('#zpp').textContent=pl?'⏸':'▶'};$('#zpp').textContent=pl?'⏸':'▶';
+$('#znx').onclick=()=>{T=(Math.floor(T/DUR)+1)*DUR+.01;dirty=true};
+if('IntersectionObserver' in window)new IntersectionObserver(e=>{vis=e[0].isIntersecting;dirty=true},{threshold:.1}).observe(cv);
+requestAnimationFrame(frame);
+/* code */
+const PINS=[['PWDN',32],['RESET',-1],['XCLK',0],['SIOD',26],['SIOC',27],['Y9',35],['Y8',34],['Y7',39],['Y6',36],['Y5',21],['Y4',19],['Y3',18],['Y2',5],['VSYNC',25],['HREF',23],['PCLK',22]];
+const CODES=[`// AquaBot - ESP32-CAM (AI-Thinker) eyes
+#include "esp_camera.h"
+
+// AI-Thinker camera pins
+${PINS.map(a=>`#define ${a[0]}_GPIO_NUM ${a[1]}`).join('\n')}
+
+const int TX_TO_UNO = 14;            // GPIO14 -> Uno A4
+const float THRESHOLD = 0.80;        // collect only if sure
+const unsigned long COOLDOWN_MS = 4000;
+unsigned long lastSend = 0;
+
+// TODO: plug in your trained model (Edge Impulse / TensorFlow Lite).
+// Return the probability (0.0 - 1.0) that the frame shows plastic waste.
+float plasticScore(camera_fb_t *fb) {
+  return 0.0;
+}
+
+void setup() {
+  Serial.begin(115200);                            // USB debug
+  Serial1.begin(9600, SERIAL_8N1, -1, TX_TO_UNO);  // TX only
+  camera_config_t cfg = {};
+  cfg.ledc_channel = LEDC_CHANNEL_0;
+  cfg.ledc_timer = LEDC_TIMER_0;
+  cfg.pin_d0 = Y2_GPIO_NUM; cfg.pin_d1 = Y3_GPIO_NUM;
+  cfg.pin_d2 = Y4_GPIO_NUM; cfg.pin_d3 = Y5_GPIO_NUM;
+  cfg.pin_d4 = Y6_GPIO_NUM; cfg.pin_d5 = Y7_GPIO_NUM;
+  cfg.pin_d6 = Y8_GPIO_NUM; cfg.pin_d7 = Y9_GPIO_NUM;
+  cfg.pin_xclk = XCLK_GPIO_NUM;   cfg.pin_pclk = PCLK_GPIO_NUM;
+  cfg.pin_vsync = VSYNC_GPIO_NUM; cfg.pin_href = HREF_GPIO_NUM;
+  cfg.pin_sccb_sda = SIOD_GPIO_NUM;  // older cores: pin_sscb_sda
+  cfg.pin_sccb_scl = SIOC_GPIO_NUM;  // older cores: pin_sscb_scl
+  cfg.pin_pwdn = PWDN_GPIO_NUM;   cfg.pin_reset = RESET_GPIO_NUM;
+  cfg.xclk_freq_hz = 20000000;
+  cfg.pixel_format = PIXFORMAT_RGB565;
+  cfg.frame_size = FRAMESIZE_QVGA;
+  cfg.fb_count = 1;
+  if (esp_camera_init(&cfg) != ESP_OK) Serial.println("camera init failed");
+}
+
+void loop() {
+  camera_fb_t *fb = esp_camera_fb_get();           // 1. capture
+  if (!fb) return;
+  float score = plasticScore(fb);                  // 2. recognise
+  esp_camera_fb_return(fb);
+
+  bool collect = score >= THRESHOLD;               // 3. decide
+  if (collect && millis() - lastSend > COOLDOWN_MS) {
+    Serial1.write('C');                            // 4. send command
+    lastSend = millis();
+  }
+  Serial.printf("plastic=%.2f %s\\n", score, collect ? "COLLECT" : "ignore");
+}
+`,`// AquaBot - Arduino Uno: add these to the existing sketch
+#include <SoftwareSerial.h>
+SoftwareSerial cam(A4, A5);     // RX = A4 (from ESP32-CAM GPIO14), A5 unused
+bool camSaysPlastic = false;
+unsigned long camTime = 0;
+
+// in setup():
+cam.begin(9600);
+
+// at the top of loop():
+if (cam.available() && cam.read() == 'C') { camSaysPlastic = true; camTime = millis(); }
+if (millis() - camTime > 3000) camSaysPlastic = false;   // command expires
+
+// in case SEARCH: camera sees plastic, sonar says it is close enough
+else if (camSaysPlastic && readCm(TRIG1, ECHO1) < WASTE_CM) {
+  drive(0, 0);
+  camSaysPlastic = false;
+  state = COLLECT;
+}
+`];
+const hl=s=>esc(s).replace(/(\/\/.*)|\b(void|int|long|bool|float|const|if|else|return|unsigned|true|false|case|define|include)\b|\b(\d+)\b|\b(Serial|Serial1|begin|println|printf|write|read|available|millis|drive|readCm|esp_camera_init|esp_camera_fb_get|esp_camera_fb_return)\b/g,(m,c1,k,n)=>c1?`<i class="c">${m}</i>`:k?`<i class="k">${m}</i>`:n?`<i class="n">${m}</i>`:`<i class="f">${m}</i>`);
+CODES.forEach((s,i)=>$('#zc'+i).innerHTML=hl(s));
+document.querySelectorAll('.zcp').forEach(b=>b.onclick=async()=>{const s=CODES[+b.dataset.i];let ok=false;try{await navigator.clipboard.writeText(s);ok=true}catch(e){const t=document.createElement('textarea');t.value=s;document.body.append(t);t.select();try{ok=document.execCommand('copy')}catch(e2){}t.remove()}b.textContent=ok?'✔ Copied!':'Select the code and copy';setTimeout(()=>b.textContent='📋 Copy code',2000)});
+})();
+</script></body></html>
